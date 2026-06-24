@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Hero – Hyperlocal Problem Solver</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">
+            <span class="logo-dot">●</span> CommunityHero
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showPage('home')">Feed</button>
+            <button class="nav-tab" onclick="showPage('report')">Report Issue</button>
+            <button class="nav-tab" onclick="showPage('dashboard')">Dashboard</button>
+            <button class="nav-tab" onclick="showPage('leaderboard')">Heroes</button>
+        </div>
+        <div class="nav-right">
+            <span class="badge-count" id="open-count">3</span>
+            <button class="btn btn-secondary" style="padding:6px 10px;font-size:0.9rem;" onclick="openSettingsModal()">⚙️</button>
+            <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.82rem;" onclick="showPage('report')">+
+                Report</button>
+        </div>
+    </nav>
+
+    <!-- PAGE: HOME -->
+    <div class="page active" id="page-home">
+        <div class="hero">
+            <div class="hero-tag">AI-Powered Civic Platform</div>
+            <h1>Fix your city,<br /><span>together.</span></h1>
+            <p>Report local issues, track resolutions, and earn recognition for making your community better.</p>
+            <div class="hero-cta">
+                <button class="btn btn-primary" onclick="showPage('report')">Report an Issue</button>
+                <button class="btn btn-secondary" onclick="showPage('dashboard')">View Impact Map</button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num" id="stat-total">47</div>
+                <div class="stat-label">Issues Reported</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="stat-resolved">31</div>
+                <div class="stat-label">Resolved</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="stat-heroes">124</div>
+                <div class="stat-label">Active Heroes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">2.4 days</div>
+                <div class="stat-label">Avg. Resolution Time</div>
+            </div>
+        </div>
+
+        <div class="feed-container">
+            <div class="feed-header">
+                <div class="feed-title">Recent Issues</div>
+                <div class="filter-row">
+                    <div class="chip active" onclick="filterIssues('all',this)">All</div>
+                    <div class="chip" onclick="filterIssues('road',this)">🚧 Road</div>
+                    <div class="chip" onclick="filterIssues('water',this)">💧 Water</div>
+                    <div class="chip" onclick="filterIssues('light',this)">💡 Lighting</div>
+                    <div class="chip" onclick="filterIssues('waste',this)">🗑️ Waste</div>
+                </div>
+            </div>
+            <div id="issues-feed"></div>
+        </div>
+    </div>
+
+    <!-- PAGE: REPORT -->
+    <div class="page" id="page-report">
+        <div class="report-page">
+            <h2>Report an Issue</h2>
+            <p class="subtitle">AI will automatically categorize and prioritize your report. Takes under 60 seconds.</p>
+
+            <div class="form-group">
+                <label class="form-label">📸 Upload Photo / Video</label>
+                <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text"><strong>Click to upload</strong> or drag & drop<br />JPG, PNG, MP4 (max
+                        10MB)</div>
+                </div>
+                <input type="file" id="file-input" accept="image/*,video/*" onchange="handleFileUpload(event)" />
+                <img id="preview-img" class="preview-img" style="display:none" />
+                <div id="ai-analysis" style="display:none" class="ai-analysis-box">
+                    <div class="ai-analysis-header">
+                        <span class="spinner"></span> <span id="ai-status">Analyzing image with Gemini AI...</span>
+                    </div>
+                    <div id="ai-analysis-content" class="ai-analysis-text"></div>
+                    <div id="ai-chips" class="ai-suggestion-chips"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Issue Title</label>
+                <input type="text" id="issue-title" class="form-input"
+                    placeholder="e.g. Large pothole on MG Road near bus stop" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select id="issue-category" class="form-select">
+                    <option value="">Select category</option>
+                    <option value="road">🚧 Road / Pothole</option>
+                    <option value="water">💧 Water Leakage</option>
+                    <option value="light">💡 Street Lighting</option>
+                    <option value="waste">🗑️ Waste Management</option>
+                    <option value="other">📌 Other Infrastructure</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea id="issue-desc" class="form-textarea"
+                    placeholder="Describe the issue in detail — location landmarks, how long it's been there, safety risk…"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Location</label>
+                <input type="text" id="issue-location" class="form-input"
+                    placeholder="e.g. MG Road, near Bus Stop 14, Jaipur" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Severity</label>
+                <div class="severity-row">
+                    <button class="sev-btn low" onclick="setSeverity('low',this)">🟢 Low</button>
+                    <button class="sev-btn medium" onclick="setSeverity('medium',this)">🟡 Medium</button>
+                    <button class="sev-btn high active" onclick="setSeverity('high',this)">🔴 High</button>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top:8px">
+                <label class="form-label">Get AI Advice on this Issue</label>
+                <button class="btn btn-secondary" style="width:100%;padding:11px" onclick="getAIAdvice()">
+                    ✨ Ask AI for solution suggestions
+                </button>
+                <div id="ai-advice-box" style="display:none" class="ai-analysis-box">
+                    <div class="ai-analysis-header">✨ Gemini AI Suggestions</div>
+                    <div id="ai-advice-content" class="ai-analysis-text"></div>
+                </div>
+            </div>
+
+            <div class="submit-row">
+                <button class="btn btn-secondary" onclick="showPage('home')">Cancel</button>
+                <button class="btn btn-primary" onclick="submitIssue()">Submit Report →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE: DASHBOARD -->
+    <div class="page" id="page-dashboard">
+        <div class="dashboard-page">
+            <div style="margin-bottom:20px">
+                <h2 style="font-family:var(--font-display);font-weight:700;font-size:1.3rem;margin-bottom:4px">Impact
+                    Dashboard</h2>
+                <p style="color:var(--muted);font-size:0.85rem">Real-time overview of community issues across Jaipur</p>
+            </div>
+
+            <div class="dash-grid">
+                <div class="dash-card">
+                    <div class="dash-card-label">Total Reports</div>
+                    <div class="dash-card-num" style="color:var(--text)">47</div>
+                    <div class="dash-card-sub">↑ 12 this week</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-label">Resolved</div>
+                    <div class="dash-card-num" style="color:var(--accent)">31</div>
+                    <div class="dash-card-sub">66% resolution rate</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-label">In Progress</div>
+                    <div class="dash-card-num" style="color:var(--warn)">10</div>
+                    <div class="dash-card-sub">Municipal review</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-label">Open / Critical</div>
+                    <div class="dash-card-num" style="color:var(--danger)">6</div>
+                    <div class="dash-card-sub">Needs attention</div>
+                </div>
+            </div>
+
+            <div class="pie-row" style="margin-bottom:16px">
+                <div class="chart-area" style="margin-bottom:0">
+                    <div class="chart-title">Issues by Category</div>
+                    <div class="legend-list">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#ef4444"></div>Road / Potholes<span
+                                class="legend-pct">38%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#3b82f6"></div>Water Leakage<span
+                                class="legend-pct">24%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#f59e0b"></div>Street Lighting<span
+                                class="legend-pct">18%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#a78bfa"></div>Waste Management<span
+                                class="legend-pct">12%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#9ca3af"></div>Other<span
+                                class="legend-pct">8%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-area" style="margin-bottom:0">
+                    <div class="chart-title">Weekly Reports</div>
+                    <div class="bar-chart" id="bar-chart"></div>
+                </div>
+            </div>
+
+            <div class="chart-area">
+                <div class="chart-title">📍 Issue Hotspot Map — Jaipur</div>
+                <div class="map-placeholder" id="map-area">
+                    <span style="z-index:2;font-size:0.8rem">Interactive map · Issues clustered by area</span>
+                    <!-- Dots -->
+                    <div class="map-dot" style="left:30%;top:40%"></div>
+                    <div class="map-dot"
+                        style="left:55%;top:25%;background:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,0.2)"></div>
+                    <div class="map-dot" style="left:70%;top:60%"></div>
+                    <div class="map-dot"
+                        style="left:20%;top:65%;background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,0.2)"></div>
+                    <div class="map-dot" style="left:80%;top:35%"></div>
+                    <div class="map-dot"
+                        style="left:45%;top:70%;background:#3b82f6;box-shadow:0 0 0 4px rgba(59,130,246,0.2)"></div>
+                </div>
+            </div>
+
+            <div class="chart-area">
+                <div class="chart-title">🤖 AI Predictive Insight</div>
+                <div id="ai-insight-content">
+                    <button class="btn btn-secondary" style="width:100%;padding:11px" onclick="getAIInsight()">
+                        ✨ Generate AI insights for this week's data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE: LEADERBOARD -->
+    <div class="page" id="page-leaderboard">
+        <div class="lb-page">
+            <h2>🏆 Community Heroes</h2>
+            <p class="subtitle">Citizens ranked by their contribution to resolving local issues</p>
+
+            <div class="user-hero-card">
+                <div class="user-avatar-big">Y</div>
+                <div class="user-info">
+                    <h3>You</h3>
+                    <p>Rank #8 · Jaipur Central</p>
+                    <div class="badge-row">
+                        <span class="badge badge-gold">⭐ First Report</span>
+                        <span class="badge badge-blue">🔵 Verifier</span>
+                        <span class="badge badge-green">✅ 3 Resolved</span>
+                    </div>
+                </div>
+                <div style="text-align:right;margin-left:auto">
+                    <div style="font-family:var(--font-display);font-weight:700;color:var(--accent);font-size:1.2rem">
+                        240</div>
+                    <div style="font-size:0.72rem;color:var(--muted)">XP Points</div>
+                </div>
+            </div>
+
+            <div class="lb-card" id="lb-list"></div>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div class="modal-overlay" id="settings-modal-overlay" onclick="closeSettingsModalEvent(event)">
+        <div class="modal" id="settings-modal">
+            <button class="modal-close" onclick="closeSettingsModal()">✕</button>
+            <h3>⚙️ Settings</h3>
+            <p style="font-size:0.85rem;color:var(--muted);margin-bottom:16px;">Configure your Google Gemini API key to enable AI features.</p>
+            <div class="form-group">
+                <label class="form-label">Gemini API Key</label>
+                <input type="password" id="api-key-input" class="form-input" placeholder="AIzaSy..." />
+                <p style="font-size:0.75rem;color:var(--muted);margin-top:6px;">Your key is stored locally in your browser and never sent to our servers.</p>
+            </div>
+            <div class="modal-actions" style="margin-top:20px;">
+                <button class="btn btn-secondary" onclick="closeSettingsModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveApiKey()">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" id="modal">
+            <button class="modal-close" onclick="closeModalBtn()">✕</button>
+            <h3 id="modal-title"></h3>
+            <div id="modal-cat" class="modal-cat"></div>
+            <div id="modal-loc" class="modal-loc"></div>
+            <div id="modal-desc" class="modal-desc"></div>
+            <div class="modal-ai-section">
+                <h4>🤖 AI Analysis</h4>
+                <p id="modal-ai"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModalBtn()">Close</button>
+                <button class="btn btn-primary" onclick="verifyIssue()">✅ Verify Issue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✅</span>
+        <span id="toast-msg">Done!</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
