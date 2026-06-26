@@ -14,7 +14,8 @@ An AI-powered civic platform that empowers everyday citizens to **report, verify
 
 ## 🌟 Live Demo
 
-🔗 **[Live Demo Hosted on GitHub Pages →](https://Achalnawal2745.github.io/ai-powered-civic-platform/)**
+🔗 **[Live Demo Hosted on GitHub Pages →](https://achalnawal2745.github.io/civicguard/)**
+
 
 ---
 
