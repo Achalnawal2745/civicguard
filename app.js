@@ -193,7 +193,7 @@ async function analyzeImageWithAI(base64Data, mimeType) {
             body: JSON.stringify({
                 contents: [{
                     parts: [
-                        { text: 'You are an AI assistant for a civic issue reporting platform called CommunityHero. Analyze this image and identify any community infrastructure issues. Respond in JSON. Structure: {"category":"road|water|light|waste|other","title":"Short issue title","description":"2 sentence description of the problem","severity":"low|medium|high","suggestions":["suggestion 1","suggestion 2","suggestion 3"]}. If no issue is visible, use category "other" and describe what you see.' },
+                        { text: 'You are an AI assistant for a civic issue reporting platform called CivicGuard. Analyze this image and identify any community infrastructure issues. Respond in JSON. Structure: {"category":"road|water|light|waste|other","title":"Short issue title","description":"2 sentence description of the problem","severity":"low|medium|high","suggestions":["suggestion 1","suggestion 2","suggestion 3"]}. If no issue is visible, use category "other" and describe what you see.' },
                         { inlineData: { mimeType: imageMediaType, data: imageData } }
                     ]
                 }],

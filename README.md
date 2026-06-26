@@ -1,8 +1,8 @@
-# 🦸 Community Hero - Hyperlocal Problem Solver
+# 🦸 CivicGuard - Hyperlocal Problem Solver
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 
-An AI-powered civic platform built for the **"Community Hero - Hyperlocal Problem Solver"** hackathon. This platform empowers everyday citizens to seamlessly report, track, and solve local infrastructure issues while helping municipal governments prioritize repairs using predictive AI insights.
+An AI-powered civic platform built for the **"CivicGuard - Hyperlocal Problem Solver"** hackathon. This platform empowers everyday citizens to seamlessly report, track, and solve local infrastructure issues while helping municipal governments prioritize repairs using predictive AI insights.
 
 ## ✨ Features
 
@@ -24,8 +24,8 @@ Because this project uses vanilla web technologies without a heavy framework, se
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/community-hero.git
-    cd community-hero
+    git clone https://github.com/your-username/civicguard.git
+    cd civicguard
     ```
 2.  **Open the Application:**
     Simply double-click the `index.html` file to open it in any modern web browser.
